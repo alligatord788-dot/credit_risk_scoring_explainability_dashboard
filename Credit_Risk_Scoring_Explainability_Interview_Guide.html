@@ -1,0 +1,327 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Credit Risk Scoring Interview Guide</title>
+  <style>
+    :root {
+      --bg: #f6f7fb;
+      --paper: #ffffff;
+      --ink: #172033;
+      --muted: #5d6678;
+      --line: #d9deea;
+      --accent: #214fd1;
+      --soft: #eaf0ff;
+      --green: #0f8f5f;
+      --red: #b83040;
+      --code: #101828;
+    }
+    * { box-sizing: border-box; }
+    body { margin: 0; font-family: Arial, Helvetica, sans-serif; background: var(--bg); color: var(--ink); line-height: 1.55; }
+    .page { max-width: 1120px; margin: 0 auto; padding: 28px 24px 64px; }
+    .hero { background: linear-gradient(135deg, #0f234f, #203f95); color: #fff; border-radius: 16px; padding: 30px; margin-bottom: 20px; box-shadow: 0 18px 40px rgba(16, 35, 79, 0.22); }
+    .hero h1 { margin: 0 0 10px; font-size: 34px; }
+    .hero p { margin: 7px 0; color: #edf2ff; }
+    .meta { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 18px; }
+    .pill { background: rgba(255,255,255,0.13); border: 1px solid rgba(255,255,255,0.22); padding: 7px 10px; border-radius: 999px; font-size: 13px; font-weight: 700; }
+    .toc, section { background: var(--paper); border: 1px solid var(--line); border-radius: 14px; padding: 22px; margin: 18px 0; box-shadow: 0 8px 24px rgba(20,32,55,0.05); }
+    h2 { margin: 0 0 14px; padding-bottom: 8px; border-bottom: 2px solid var(--line); font-size: 25px; }
+    h3 { margin: 20px 0 8px; color: #1d3f91; font-size: 19px; }
+    h4 { margin: 16px 0 6px; font-size: 16px; }
+    table { width: 100%; border-collapse: collapse; margin: 12px 0; font-size: 14px; }
+    th, td { border: 1px solid var(--line); padding: 9px 10px; vertical-align: top; }
+    th { background: var(--soft); text-align: left; }
+    code { background: #eef2f7; border: 1px solid #d8dee9; padding: 1px 5px; border-radius: 5px; font-family: Consolas, "Courier New", monospace; color: #111827; }
+    pre { background: var(--code); color: #e7edf7; padding: 16px; border-radius: 12px; overflow-x: auto; font-family: Consolas, "Courier New", monospace; font-size: 13px; line-height: 1.45; }
+    .note { background: #fff8e5; border-left: 5px solid #e8a500; padding: 12px 14px; border-radius: 8px; margin: 12px 0; }
+    .good { background: #eafaf2; border-left: 5px solid var(--green); padding: 12px 14px; border-radius: 8px; margin: 12px 0; }
+    .danger { background: #fff0f1; border-left: 5px solid var(--red); padding: 12px 14px; border-radius: 8px; margin: 12px 0; }
+    .qa { border: 1px solid var(--line); border-radius: 10px; padding: 12px 14px; margin: 12px 0; background: #fcfdff; }
+    .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 12px; }
+    .card { border: 1px solid var(--line); border-radius: 12px; padding: 14px; background: #fcfdff; }
+    @media print { body { background: #fff; } .page { max-width: none; padding: 0; } .hero, .toc, section { box-shadow: none; break-inside: avoid; } }
+  </style>
+</head>
+<body>
+<div class="page">
+  <div class="hero">
+    <h1>Credit Risk Scoring & Explainability Dashboard - Interview Guide</h1>
+    <p>Beginner-friendly guide for your finance/data science project using Python, Scikit-learn, Streamlit, Plotly and credit-risk analytics.</p>
+    <p><b>Core idea:</b> this project is not only a loan default classifier. It converts default probability into a risk score, risk band, lending decision, threshold tradeoff analysis and explainability dashboard.</p>
+    <div class="meta">
+      <span class="pill">Dataset: LendingClub-style loan data</span>
+      <span class="pill">Rows loaded: 100,000</span>
+      <span class="pill">Modeling rows: 88,399</span>
+      <span class="pill">Default rate: 20.49%</span>
+      <span class="pill">Best ROC-AUC: 0.7398</span>
+    </div>
+  </div>
+
+  <div class="toc">
+    <h2>Table of Contents</h2>
+    <ol>
+      <li><a href="#cv">What the interviewer sees from your CV</a></li>
+      <li><a href="#problem">What business problem does this solve?</a></li>
+      <li><a href="#pipeline">Full pipeline in simple words</a></li>
+      <li><a href="#files">File structure and role of each file</a></li>
+      <li><a href="#data">Data cleaning and leakage removal</a></li>
+      <li><a href="#model">Model training and evaluation</a></li>
+      <li><a href="#scorecard">Risk score, risk band and decision rules</a></li>
+      <li><a href="#dashboard">Dashboard explanation</a></li>
+      <li><a href="#functions">Important functions and code flow</a></li>
+      <li><a href="#concepts">ML concepts you must know</a></li>
+      <li><a href="#qa">Interview questions with answers</a></li>
+      <li><a href="#ready">Ready-to-speak answers</a></li>
+    </ol>
+  </div>
+
+  <section id="cv">
+    <h2>1. What the Interviewer Sees From Your CV</h2>
+    <div class="good">
+      <b>Credit Risk Scoring & Explainability Dashboard</b> | Python, Scikit-learn, Streamlit, Financial Analytics<br>
+      - Built credit-risk pipeline on 88,399 LendingClub loans with leakage removal and probability risk scoring<br>
+      - Trained Logistic Regression, Decision Tree and Random Forest, achieving ROC-AUC of 0.7398 with thresholds<br>
+      - Created dashboard for default segments, risk bands, feature importance, approvals and applicant explanations
+    </div>
+    <p>Likely starting questions:</p>
+    <ul>
+      <li>What is credit risk?</li>
+      <li>What does default probability mean?</li>
+      <li>Why is leakage removal important?</li>
+      <li>Why Logistic Regression became the best model?</li>
+      <li>What is ROC-AUC and why did you use it?</li>
+      <li>How did you convert probability into score, band and decision?</li>
+      <li>What does the dashboard explain?</li>
+    </ul>
+  </section>
+
+  <section id="problem">
+    <h2>2. What Business Problem Does This Solve?</h2>
+    <p>Banks and lenders need to decide whether a borrower is likely to repay a loan. A simple model can say default or not default, but a real decision system needs more:</p>
+    <ul>
+      <li>default probability: how risky is the applicant?</li>
+      <li>risk score: a scorecard-style number for business users</li>
+      <li>risk band: low, medium, high or very high risk</li>
+      <li>decision: approve, manual review or reject</li>
+      <li>explanation: which factors are influencing risk?</li>
+    </ul>
+    <p>The project follows this flow:</p>
+<pre>
+borrower data -> cleaning -> ML model -> default probability
+default probability -> risk score -> risk band -> credit decision -> dashboard explanation
+</pre>
+    <div class="note">
+      <b>Simple answer:</b> I upgraded a loan default prediction model into a small credit-risk decision system that is easier for a finance team to understand and use.
+    </div>
+  </section>
+
+  <section id="pipeline">
+    <h2>3. Full Pipeline in Simple Words</h2>
+    <table>
+      <tr><th>Step</th><th>What happens?</th><th>File</th></tr>
+      <tr><td>1</td><td>Find raw CSV dataset from this project or sibling loan project folder.</td><td><code>find_dataset_path()</code> (<code>src/project_utils.py</code>)</td></tr>
+      <tr><td>2</td><td>Read CSV and simplify column names.</td><td><code>read_credit_csv()</code>, <code>simplify_columns()</code> (<code>src/project_utils.py</code>)</td></tr>
+      <tr><td>3</td><td>Find target column and convert loan outcome to binary default.</td><td><code>find_target_column()</code>, <code>convert_target_to_binary()</code> (<code>src/project_utils.py</code>)</td></tr>
+      <tr><td>4</td><td>Remove leakage/id/constant columns and keep useful borrower-level features.</td><td><code>clean_raw_data()</code> (<code>src/project_utils.py</code>)</td></tr>
+      <tr><td>5</td><td>Train Logistic Regression, Decision Tree and Random Forest pipelines.</td><td><code>main()</code>, <code>create_pipeline()</code> (<code>src/train_model.py</code>)</td></tr>
+      <tr><td>6</td><td>Select best model using ROC-AUC.</td><td><code>evaluate_model()</code> (<code>src/train_model.py</code>)</td></tr>
+      <tr><td>7</td><td>Create risk score, risk band, lending decision, threshold table and feature importance.</td><td><code>src/train_model.py</code>, <code>src/project_utils.py</code></td></tr>
+      <tr><td>8</td><td>Use saved model/schema inside Streamlit dashboard and simple web app.</td><td><code>dashboard_app.py</code>, <code>web_app.py</code></td></tr>
+    </table>
+  </section>
+
+  <section id="files">
+    <h2>4. File Structure and Role of Each File</h2>
+    <table>
+      <tr><th>File</th><th>Role</th><th>What to say</th></tr>
+      <tr><td><code>src/project_utils.py</code></td><td>Common paths, data cleaning helpers, target conversion, risk scoring rules, save/load functions.</td><td>This is the reusable utility file used by cleaning, training, prediction and dashboard.</td></tr>
+      <tr><td><code>src/data_cleaning.py</code></td><td>Runs the cleaning pipeline and saves cleaned CSV.</td><td>It separates raw cleaning from model training.</td></tr>
+      <tr><td><code>src/train_model.py</code></td><td>Builds preprocessing pipelines, trains models, evaluates metrics, saves artifacts.</td><td>This is the main ML training file.</td></tr>
+      <tr><td><code>src/predict.py</code></td><td>Loads saved model and predicts one sample applicant.</td><td>This proves the saved model can be reused after training.</td></tr>
+      <tr><td><code>dashboard_app.py</code></td><td>Streamlit dashboard for analytics, explainability, thresholds and applicant scoring.</td><td>This is the main business-facing app.</td></tr>
+      <tr><td><code>web_app.py</code></td><td>Simple local HTML web form using Python server.</td><td>This is a lightweight prediction website without Streamlit.</td></tr>
+      <tr><td><code>notebooks/kaggle_credit_risk_scoring_explainability.py</code></td><td>Kaggle workflow version.</td><td>Used to reproduce the pipeline notebook-style.</td></tr>
+    </table>
+  </section>
+
+  <section id="data">
+    <h2>5. Data Cleaning and Leakage Removal</h2>
+    <h3>What is the target?</h3>
+    <p>The target is <code>default</code>, where:</p>
+    <ul>
+      <li><code>0</code> means non-default / safer loan, such as fully paid.</li>
+      <li><code>1</code> means default / high-risk loan, such as charged off, default, late or not paid.</li>
+    </ul>
+    <p><code>convert_target_to_binary()</code> (<code>src/project_utils.py</code>) handles numeric labels, yes/no labels, fully paid, charged off, default, late and current loans. Current/grace loans are removed because their final outcome is not known yet.</p>
+
+    <h3>What is leakage?</h3>
+    <p>Data leakage means using information that would not be available at the time of prediction. In credit risk, post-loan outcome columns can accidentally reveal whether the borrower defaulted.</p>
+    <p>Example leakage-like fields:</p>
+    <ul>
+      <li>recovery amount after default</li>
+      <li>collection status</li>
+      <li>last payment related fields</li>
+      <li>settlement or hardship information</li>
+      <li>loan status itself as a feature</li>
+    </ul>
+    <div class="danger">
+      <b>Why leakage removal matters:</b> If leakage columns remain, the model may look very accurate but it is cheating. It would fail on real new applicants.
+    </div>
+    <p><code>clean_raw_data()</code> (<code>src/project_utils.py</code>) drops leakage, ID-like and constant columns, then keeps useful borrower-level features where available.</p>
+  </section>
+
+  <section id="model">
+    <h2>6. Model Training and Evaluation</h2>
+    <h3>Preprocessing pipeline</h3>
+    <p><code>create_pipeline()</code> (<code>src/train_model.py</code>) builds one complete Scikit-learn pipeline:</p>
+    <ul>
+      <li>Numeric columns: median imputation + standard scaling.</li>
+      <li>Categorical columns: most-frequent imputation + one-hot encoding.</li>
+      <li>Model: Logistic Regression, Decision Tree or Random Forest.</li>
+    </ul>
+    <p>This is important because the same preprocessing is used during training and prediction.</p>
+
+    <h3>Models trained</h3>
+    <table>
+      <tr><th>Model</th><th>Why used?</th><th>Simple explanation</th></tr>
+      <tr><td>Logistic Regression</td><td>Strong baseline for binary classification and interpretable coefficients.</td><td>Predicts probability of default using a weighted combination of features.</td></tr>
+      <tr><td>Decision Tree</td><td>Captures non-linear rules and is easy to visualize conceptually.</td><td>Splits applicants using if-else style conditions.</td></tr>
+      <tr><td>Random Forest</td><td>Reduces overfitting by combining many decision trees.</td><td>Many trees vote together for a more stable result.</td></tr>
+    </table>
+
+    <h3>Train-test split</h3>
+    <p><code>train_test_split()</code> (<code>src/train_model.py</code>) uses 80% training and 20% testing with <code>random_state=42</code>. Stratification keeps the default/non-default ratio similar in both sets.</p>
+
+    <h3>Metrics</h3>
+    <p><code>evaluate_model()</code> (<code>src/train_model.py</code>) calculates accuracy, precision, recall, F1 score and ROC-AUC.</p>
+    <table>
+      <tr><th>Metric</th><th>Meaning</th><th>Why relevant?</th></tr>
+      <tr><td>Accuracy</td><td>Overall correct predictions.</td><td>Can be misleading if defaults are minority class.</td></tr>
+      <tr><td>Precision</td><td>Among predicted risky borrowers, how many actually defaulted?</td><td>Important when false alarms are costly.</td></tr>
+      <tr><td>Recall</td><td>Among actual defaults, how many did we catch?</td><td>Important because missing risky borrowers is dangerous.</td></tr>
+      <tr><td>F1 score</td><td>Balance of precision and recall.</td><td>Useful when both false positives and false negatives matter.</td></tr>
+      <tr><td>ROC-AUC</td><td>How well the model ranks risky borrowers above safe borrowers.</td><td>Good for selecting model across thresholds.</td></tr>
+    </table>
+    <div class="good">
+      <b>Result:</b> Best model was Logistic Regression with ROC-AUC of <b>0.7398</b>. This means the model has useful ranking ability, but it is not perfect and should support decisions rather than fully automate them.
+    </div>
+  </section>
+
+  <section id="scorecard">
+    <h2>7. Risk Score, Risk Band and Decision Rules</h2>
+    <h3>From probability to credit score</h3>
+    <p><code>probability_to_score()</code> (<code>src/project_utils.py</code>) converts default probability into a score:</p>
+<pre>
+risk_score = 850 - default_probability * 550
+</pre>
+    <p>Higher default probability gives lower score. This makes the model output easier for a finance user to understand.</p>
+
+    <h3>Risk bands</h3>
+    <p><code>probability_to_risk_band()</code> (<code>src/project_utils.py</code>) uses:</p>
+    <table>
+      <tr><th>Default probability</th><th>Risk band</th></tr>
+      <tr><td>&lt; 0.20</td><td>Low Risk</td></tr>
+      <tr><td>0.20 to &lt; 0.40</td><td>Medium Risk</td></tr>
+      <tr><td>0.40 to &lt; 0.60</td><td>High Risk</td></tr>
+      <tr><td>&gt;= 0.60</td><td>Very High Risk</td></tr>
+    </table>
+
+    <h3>Lending decision</h3>
+    <p><code>probability_to_decision()</code> (<code>src/project_utils.py</code>) uses:</p>
+    <table>
+      <tr><th>Default probability</th><th>Decision</th></tr>
+      <tr><td>&lt; 0.25</td><td>Approve</td></tr>
+      <tr><td>0.25 to &lt; 0.50</td><td>Manual Review</td></tr>
+      <tr><td>&gt;= 0.50</td><td>Reject</td></tr>
+    </table>
+    <div class="note">
+      <b>Important:</b> These are simple business rules for a project demo. In real lending, thresholds must be selected using business cost, regulation, fairness checks and historical validation.
+    </div>
+
+    <h3>Threshold analysis</h3>
+    <p><code>create_threshold_table()</code> (<code>src/train_model.py</code>) tests thresholds <code>0.20, 0.30, 0.40, 0.50, 0.60</code>. A lower threshold catches more defaults but flags more safe borrowers. A higher threshold approves more borrowers but may miss risky loans.</p>
+  </section>
+
+  <section id="dashboard">
+    <h2>8. Dashboard Explanation</h2>
+    <p><code>dashboard_app.py</code> creates a Streamlit app with four main tabs:</p>
+    <table>
+      <tr><th>Tab</th><th>What it shows</th><th>Why useful?</th></tr>
+      <tr><td>Risk Analytics</td><td>Risk bands, decisions and feature-vs-default box plot.</td><td>Shows default distribution and borrower patterns.</td></tr>
+      <tr><td>Explainability</td><td>Top feature importance / coefficients.</td><td>Explains which inputs influence risk.</td></tr>
+      <tr><td>Thresholds</td><td>Precision, recall, F1, false positives and false negatives at different thresholds.</td><td>Shows business tradeoff.</td></tr>
+      <tr><td>Applicant Scoring</td><td>Input form for one applicant and output probability, score, band and decision.</td><td>Makes the model usable for a single prediction.</td></tr>
+    </table>
+    <p>The dashboard shows records, default rate, best model, ROC-AUC and recall at the top so a viewer understands the dataset and model quality quickly.</p>
+  </section>
+
+  <section id="functions">
+    <h2>9. Important Functions and Code Flow</h2>
+    <table>
+      <tr><th>Function</th><th>File</th><th>Purpose</th><th>Complexity idea</th></tr>
+      <tr><td><code>find_dataset_path()</code></td><td><code>src/project_utils.py</code></td><td>Find raw CSV from project or sibling folder.</td><td>O(number of files checked)</td></tr>
+      <tr><td><code>clean_raw_data()</code></td><td><code>src/project_utils.py</code></td><td>Clean columns, create target, drop leakage, select features.</td><td>O(rows * columns)</td></tr>
+      <tr><td><code>get_feature_columns()</code></td><td><code>src/project_utils.py</code></td><td>Separate numeric and categorical features.</td><td>O(columns)</td></tr>
+      <tr><td><code>create_pipeline()</code></td><td><code>src/train_model.py</code></td><td>Build preprocessing + model pipeline.</td><td>Pipeline creation is small; fitting depends on model/data.</td></tr>
+      <tr><td><code>evaluate_model()</code></td><td><code>src/train_model.py</code></td><td>Calculate metrics from probabilities and predictions.</td><td>O(test rows)</td></tr>
+      <tr><td><code>create_threshold_table()</code></td><td><code>src/train_model.py</code></td><td>Evaluate multiple probability thresholds.</td><td>O(number of thresholds * test rows)</td></tr>
+      <tr><td><code>get_feature_importance()</code></td><td><code>src/train_model.py</code></td><td>Extract coefficients or tree feature importances.</td><td>O(transformed features)</td></tr>
+      <tr><td><code>add_risk_outputs()</code></td><td><code>src/project_utils.py</code></td><td>Add default probability, score, band and decision.</td><td>O(rows)</td></tr>
+      <tr><td><code>main()</code></td><td><code>dashboard_app.py</code></td><td>Loads artifacts, builds tabs, charts and scoring form.</td><td>Depends on data size and chart rendering.</td></tr>
+    </table>
+  </section>
+
+  <section id="concepts">
+    <h2>10. ML Concepts You Must Know</h2>
+    <h3>Classification</h3>
+    <p>This is a binary classification problem because the target has two classes: default = 1 and non-default = 0.</p>
+
+    <h3>Probability vs class label</h3>
+    <p>The model first predicts probability, such as 0.3729. A threshold converts it into class 0/1. Business rules convert it into score, band and decision.</p>
+
+    <h3>Why ROC-AUC?</h3>
+    <p>ROC-AUC measures ranking quality. In credit risk, ranking borrowers from safest to riskiest is very useful because the threshold can be adjusted later depending on business risk appetite.</p>
+
+    <h3>Why Logistic Regression performed well?</h3>
+    <p>Credit risk data often has strong linear risk signals. Logistic Regression with scaling and class weights can perform strongly, especially after leakage removal. It is also easier to explain than complex models.</p>
+
+    <h3>Why class_weight="balanced"?</h3>
+    <p>Defaults are fewer than non-defaults. Balanced class weights tell the model to pay more attention to the minority default class.</p>
+
+    <h3>Feature importance</h3>
+    <p>For Logistic Regression, coefficients show direction and strength. For trees, feature_importances_ shows which variables were used most to reduce uncertainty.</p>
+  </section>
+
+  <section id="qa">
+    <h2>11. Interview Questions With Answers</h2>
+    <div class="qa"><b>Q1. Explain the project in 30 seconds.</b><p>I built a credit-risk scoring system on LendingClub-style loan data. It cleans raw loan records, removes leakage, trains classification models, selects the best model by ROC-AUC, and converts default probability into risk score, risk band and lending decision. I also built a Streamlit dashboard for risk analytics, threshold tradeoffs, feature importance and applicant-level scoring.</p></div>
+    <div class="qa"><b>Q2. What is data leakage?</b><p>Data leakage means using information that would not be available at prediction time. In loan data, post-loan variables like collections, recoveries or final payment information can reveal the outcome. I removed such columns so the model learns from borrower-level information instead of cheating.</p></div>
+    <div class="qa"><b>Q3. Why did you use ROC-AUC?</b><p>ROC-AUC evaluates how well the model ranks risky borrowers above safer borrowers across thresholds. Since lending decisions may use different thresholds depending on business policy, ROC-AUC is more useful than only accuracy.</p></div>
+    <div class="qa"><b>Q4. What does a ROC-AUC of 0.7398 mean?</b><p>It means the model has useful ranking power. If we randomly take one defaulted and one non-defaulted borrower, the model will rank the defaulted one as riskier around 74% of the time. It is useful but not perfect.</p></div>
+    <div class="qa"><b>Q5. Why not only show default/not-default?</b><p>A binary label hides business nuance. A probability lets us create risk bands, manual review ranges, and threshold tradeoff analysis. That makes the project more like a decision-support system.</p></div>
+    <div class="qa"><b>Q6. What is threshold analysis?</b><p>Threshold analysis shows what happens when we change the probability cutoff. Lower thresholds catch more risky borrowers but also reject more safe borrowers. Higher thresholds approve more borrowers but may miss more defaults.</p></div>
+    <div class="qa"><b>Q7. How does the applicant scoring form work?</b><p>The form uses the saved input schema to collect feature values in the correct order. The saved pipeline preprocesses the input, predicts default probability, and then utility functions convert probability into score, band and decision.</p></div>
+    <div class="qa"><b>Q8. Is this production-ready?</b><p>No. It is a learning and portfolio project. A production credit model would need validation on fresh data, fairness checks, explainability review, monitoring, security and regulatory approval.</p></div>
+  </section>
+
+  <section id="ready">
+    <h2>12. Ready-to-Speak Answers</h2>
+    <h3>Best project explanation</h3>
+    <p>I made this project to show a finance-style ML workflow, not just basic prediction. The model predicts default probability from borrower data. Then I convert that probability into a credit score, risk band and lending decision. I also added threshold analysis to show the business tradeoff between catching defaults and wrongly flagging safe borrowers, plus feature importance to explain risk drivers.</p>
+
+    <h3>Limitation answer</h3>
+    <p>The current project is good for learning and demonstration, but not enough for real lending decisions. Real systems need stronger validation, bias/fairness testing, better explainability, more recent data, cost-sensitive thresholds and monitoring after deployment.</p>
+
+    <h3>Final checklist</h3>
+    <ul>
+      <li>I can explain default probability, risk score, risk band and decision.</li>
+      <li>I can explain leakage and why removing it matters.</li>
+      <li>I can explain Logistic Regression, Decision Tree and Random Forest.</li>
+      <li>I can explain ROC-AUC, precision, recall and threshold tradeoffs.</li>
+      <li>I can explain how the Streamlit dashboard uses saved artifacts.</li>
+    </ul>
+  </section>
+</div>
+</body>
+</html>

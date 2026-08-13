@@ -1,0 +1,8 @@
+data/raw/*.csv
+data/processed/*.csv
+artifacts/*.pkl
+artifacts/*.json
+artifacts/*.csv
+__pycache__/
+*.pyc
+.streamlit/
