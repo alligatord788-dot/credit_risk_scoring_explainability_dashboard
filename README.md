@@ -147,10 +147,6 @@ Manual Review: 0.25 to 0.50
 Reject: probability >= 0.50
 ```
 
-## Interview Explanation
-
-I built a credit-risk scoring system, not just a binary classifier. The model first predicts probability of default. Then I convert that probability into a risk score, risk band and lending decision. I also added threshold analysis to show the tradeoff between catching risky borrowers and wrongly flagging safe borrowers. Finally, I used feature importance to explain which borrower attributes influence risk.
-
 ## Folder Structure
 
 ```text
