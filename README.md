@@ -123,18 +123,7 @@ Credit decision: Manual Review
 python -m streamlit run dashboard_app.py
 ```
 
-### 6. Run Simple Website
-
-```bash
-python web_app.py
-```
-
-Open:
-
-```text
-http://127.0.0.1:8002
-```
-### 7. Run the dashboard on powershall
+### 6. Run the dashboard on PowerShell
 
 ```bash
 cd E:\Internship\projects\credit_risk_scoring_explainability_dashboard
@@ -162,15 +151,6 @@ Reject: probability >= 0.50
 
 I built a credit-risk scoring system, not just a binary classifier. The model first predicts probability of default. Then I convert that probability into a risk score, risk band and lending decision. I also added threshold analysis to show the tradeoff between catching risky borrowers and wrongly flagging safe borrowers. Finally, I used feature importance to explain which borrower attributes influence risk.
 
-## CV Version
-
-```text
-• Credit Risk Scoring & Explainability Dashboard | Python, Scikit-learn, Streamlit, Plotly, Financial Analytics
--Built credit-risk scoring pipeline on 88,399 LendingClub loans with leakage removal and probability-based risk scoring
--Trained Logistic Regression, Decision Tree and Random Forest models, achieving ROC-AUC of 0.7398 with threshold analysis
--Created dashboard for default segments, risk bands, feature importance, approval decisions and applicant-level credit explanations
-```
-
 ## Folder Structure
 
 ```text
@@ -188,6 +168,5 @@ credit_risk_scoring_explainability_dashboard/
     kaggle_credit_risk_scoring_explainability.py
   artifacts/
   dashboard_app.py
-  web_app.py
   README.md
 ```
